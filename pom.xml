@@ -5,6 +5,7 @@
     <modules>
         <module>twitter-to-kafka-service</module>
         <module>app-config-data</module>
+        <module>kafka</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -25,6 +26,7 @@
         <lombok.version>1.18.20</lombok.version>
         <httpclient.version>4.5.14</httpclient.version>
         <json.version>20220320</json.version>
+        <avro.version>1.11.1</avro.version>
     </properties>
 
     <dependencyManagement>
@@ -69,6 +71,11 @@
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
                 <version>${lombok.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.avro</groupId>
+                <artifactId>avro</artifactId>
+                <version>${avro.version}</version>
             </dependency>
 
         </dependencies>
