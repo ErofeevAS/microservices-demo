@@ -22,6 +22,8 @@
         <spring-boot.version>2.7.8-SNAPSHOT</spring-boot.version>
         <twitter4j.version>4.0.7</twitter4j.version>
         <lombok.version>1.18.20</lombok.version>
+        <httpclient.version>4.5.14</httpclient.version>
+        <json.version>20220320</json.version>
     </properties>
 
     <dependencyManagement>
@@ -37,6 +39,18 @@
                 <artifactId>spring-boot-starter-test</artifactId>
                 <version>${spring-boot.version}</version>
                 <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.httpcomponents</groupId>
+                <artifactId>httpclient</artifactId>
+                <version>${httpclient.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.json</groupId>
+                <artifactId>json</artifactId>
+                <version>${json.version}</version>
             </dependency>
 
             <dependency>
