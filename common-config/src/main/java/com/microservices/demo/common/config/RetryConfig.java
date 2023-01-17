@@ -1,4 +1,4 @@
-package com.microservices.deomo.common.config;
+package com.microservices.demo.common.config;
 
 import com.microservices.demo.config.RetryConfigData;
 import lombok.RequiredArgsConstructor;
