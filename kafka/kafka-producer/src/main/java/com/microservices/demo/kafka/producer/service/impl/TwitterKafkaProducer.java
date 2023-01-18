@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.util.concurrent.ListenableFutureCallback;
 
-import javax.annotation.PreDestroy;
 
 @Service
 public class TwitterKafkaProducer implements KafkaProducer<Long, TwitterAvroModel> {
@@ -32,13 +31,13 @@ public class TwitterKafkaProducer implements KafkaProducer<Long, TwitterAvroMode
         addCallback(topicName, message, kafkaResultFuture);
     }
 
-    @PreDestroy
-    public void close() {
-        if (kafkaTemplate != null) {
-            LOG.info("Closing kafka producer!");
-            kafkaTemplate.destroy();
-        }
-    }
+//    @PreDestroy
+//    public void close() {
+//        if (kafkaTemplate != null) {
+//            LOG.info("Closing kafka producer!");
+//            kafkaTemplate.destroy();
+//        }
+//    }
 
     private void addCallback(String topicName, TwitterAvroModel message,
                              ListenableFuture<SendResult<Long, TwitterAvroModel>> kafkaResultFuture) {
