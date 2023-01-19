@@ -3,6 +3,8 @@ spring:
     name: kafka-to-elastic-service
   profiles:
     active: kafka_to_elastic
+  config:
+    import: 'configserver:'
   cloud:
     config:
       name: kafka-to-elastic-service,config-client
