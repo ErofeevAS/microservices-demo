@@ -5,6 +5,17 @@ spring:
     config:
       server:
         git:
-          uri: file://D:/projects/microservices-demo/config-server-repository
+          uri: https://github.com/ErofeevAS/spring-cloud-config-server-repository
+          username: erofeevas
+          password: '{cipher}d17a95ed8d1f23fba38b8f7e30d259392201a9b980b9a33e2cbeefe4ec302508ae4ca28a2631a8f851fa72eecac6aca4e53b19a9a3ed545f95b53ccd5a1ce3b1'
           clone-on-start: true
+          default-label: main
       fail-fast: true
+  security:
+    user:
+      name: spring_cloud_user
+      password: '{cipher}d6da1f438a51f9ee6e9dfa7716f718a9c8215c8684159f850fd0aa4da3e2b2eaf1a10ceb06c44b2aede583cf9f9afe1c'
+
+
+encrypt:
+  key:  ${ENCRYPT_KEY}
