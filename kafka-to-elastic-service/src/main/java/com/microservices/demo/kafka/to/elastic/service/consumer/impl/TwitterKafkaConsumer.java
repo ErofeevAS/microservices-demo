@@ -1,9 +1,13 @@
 package com.microservices.demo.kafka.to.elastic.service.consumer.impl;
 
 import com.microservices.demo.config.KafkaConfigData;
+import com.microservices.demo.config.KafkaConsumerConfigData;
+import com.microservices.demo.elastic.index.client.service.ElasticIndexClient;
+import com.microservices.demo.elastic.model.index.impl.TwitterIndexModel;
 import com.microservices.demo.kafka.admin.client.KafkaAdminClient;
 import com.microservices.demo.kafka.avro.model.TwitterAvroModel;
 import com.microservices.demo.kafka.to.elastic.service.consumer.KafkaConsumer;
+import com.microservices.demo.kafka.to.elastic.service.transofrmer.AvroToElasticModelTransformer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
@@ -16,6 +20,7 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class TwitterKafkaConsumer implements KafkaConsumer<Long, TwitterAvroModel> {
@@ -23,29 +28,37 @@ public class TwitterKafkaConsumer implements KafkaConsumer<Long, TwitterAvroMode
     private static final Logger LOG = LoggerFactory.getLogger(TwitterKafkaConsumer.class);
 
     private final KafkaListenerEndpointRegistry kafkaListenerEndpointRegistry;
-
     private final KafkaAdminClient kafkaAdminClient;
-
     private final KafkaConfigData kafkaConfigData;
+    private final KafkaConsumerConfigData kafkaConsumerConfigData;
+    private final AvroToElasticModelTransformer avroToElasticModelTransformer;
+    private final ElasticIndexClient<TwitterIndexModel> elasticIndexClient;
 
     public TwitterKafkaConsumer(KafkaListenerEndpointRegistry listenerEndpointRegistry,
                                 KafkaAdminClient adminClient,
-                                KafkaConfigData configData) {
+                                KafkaConfigData configData,
+                                KafkaConsumerConfigData kafkaConsumerConfigData,
+                                AvroToElasticModelTransformer avroToElasticModelTransformer,
+                                ElasticIndexClient<TwitterIndexModel> elasticIndexClient) {
         this.kafkaListenerEndpointRegistry = listenerEndpointRegistry;
         this.kafkaAdminClient = adminClient;
         this.kafkaConfigData = configData;
+        this.kafkaConsumerConfigData = kafkaConsumerConfigData;
+        this.avroToElasticModelTransformer = avroToElasticModelTransformer;
+        this.elasticIndexClient = elasticIndexClient;
     }
 
     @EventListener
     public void onAppStarted(ApplicationStartedEvent event){
         kafkaAdminClient.checkTopicsCreated();;
         LOG.info("Topics with name {} is ready for operations!", kafkaConfigData.getTopicNamesToCreate().toArray());
-        kafkaListenerEndpointRegistry.getListenerContainer("twitterTopicListener").start();
+        Objects.requireNonNull(kafkaListenerEndpointRegistry
+                .getListenerContainer(kafkaConsumerConfigData.getConsumerGroupId())).start();
 
     }
 
     @Override
-    @KafkaListener(id = "twitterTopicListener", topics = "${kafka-config.topic-name}")
+    @KafkaListener(id = "${kafka-consumer-config.consumer-group-id}", topics = "${kafka-config.topic-name}")
     public void receive(@Payload List<TwitterAvroModel> messages,
                         @Header(KafkaHeaders.RECEIVED_MESSAGE_KEY) List<Integer> keys,
                         @Header(KafkaHeaders.RECEIVED_PARTITION_ID) List<Integer> partitions,
@@ -57,5 +70,8 @@ public class TwitterKafkaConsumer implements KafkaConsumer<Long, TwitterAvroMode
                 partitions.toString(),
                 offsets.toString(),
                 Thread.currentThread().getId());
+        List<TwitterIndexModel> elasticModels = avroToElasticModelTransformer.getElasticModels(messages);
+        List<String> documentsIds = elasticIndexClient.save(elasticModels);
+        LOG.info("Documents save to elasticsearch with ids {}", documentsIds.toArray());
     }
 }

@@ -27,6 +27,6 @@ public class TwitterIndexModel implements IndexModel {
     @Field(type = FieldType.Date, format = DateFormat.custom, pattern = "uuuu-MM-dd'T'HH:mm:ssZZ")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "uuuu-MM-dd'T'HH:mm:ssZZ")
     @JsonProperty
-    private LocalDateTime createAt;
+    private LocalDateTime createdAt;
 
 }
