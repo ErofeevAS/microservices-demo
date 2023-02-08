@@ -17,11 +17,11 @@ import java.util.Objects;
 
 @Configuration
 @EnableElasticsearchRepositories(basePackages = "com.microservices.demo.elastic")
-public class ElasticsearchConfig extends AbstractElasticsearchConfiguration {
+public class ElasticSearchConfig extends AbstractElasticsearchConfiguration {
 
     private final ElasticConfigData elasticConfigData;
 
-    public ElasticsearchConfig(ElasticConfigData configData) {
+    public ElasticSearchConfig(ElasticConfigData configData) {
         this.elasticConfigData = configData;
     }
 
