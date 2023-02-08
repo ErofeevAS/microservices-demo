@@ -1,4 +1,4 @@
-package com.mivroservices.demo.elastic.config;
+package com.microservices.demo.elastic.config;
 
 import com.microservices.demo.config.ElasticConfigData;
 import org.apache.http.HttpHost;
@@ -45,7 +45,7 @@ public class ElasticSearchConfig extends AbstractElasticsearchConfiguration {
     }
 
     @Bean
-    public ElasticsearchOperations elasticsearchTemplate(){
+    public ElasticsearchOperations elasticsearchOperations(){
         return new ElasticsearchRestTemplate(elasticsearchClient());
     }
 }
