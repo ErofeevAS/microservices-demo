@@ -16,6 +16,11 @@
         <module>elastic</module>
         <module>common-util</module>
         <module>elastic-query-service</module>
+        <module>elastic-query-web-client</module>
+        <module>elastic-query-service-common</module>
+        <module>elastic-query-web-client-common</module>
+        <module>reactive-elastic-query-service</module>
+        <module>reactive-elastic-query-web-client</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -44,7 +49,7 @@
         <spring-cloud.version>3.1.4</spring-cloud.version>
         <spring-cloud-dependencies.version>2021.0.4</spring-cloud-dependencies.version>
         <elastic.version>7.17.4</elastic.version>
-        <springdoc-openapi-ui.version>1.5.0</springdoc-openapi-ui.version>
+        <springdoc-openapi-ui.version>1.6.12</springdoc-openapi-ui.version>
     </properties>
 
     <repositories>
@@ -59,6 +64,16 @@
             <dependency>
                 <groupId>com.microservices.demo</groupId>
                 <artifactId>common-util</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.microservices.demo</groupId>
+                <artifactId>elastic-query-web-client-common</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.microservices.demo</groupId>
+                <artifactId>elastic-query-service-common</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>

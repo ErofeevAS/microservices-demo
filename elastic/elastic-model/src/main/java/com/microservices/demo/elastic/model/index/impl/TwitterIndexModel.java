@@ -5,12 +5,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microservices.demo.elastic.model.index.IndexModel;
 import lombok.Builder;
 import lombok.Data;
-import org.springframework.data.elasticsearch.annotations.DateFormat;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 
-import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 
 @Data
